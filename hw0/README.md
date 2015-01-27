@@ -2,7 +2,7 @@
 
 **Due: Friday, February 6th, 11:59 pm. Value: 2%**
 
-Welcome to CS171.  In this class, we will be using a variety of tools that will require some initial configuration. To ensure everything goes smoothly moving forward, we will setup the majority of those tools in this homework.  Problems 1 and 3 will not be graded **except** for Problem 2. In Problem 2 you set up git and github for this course, which is essential before starting with HW 1.
+Welcome to CS171.  In this class, we will be using a variety of tools that will require some initial configuration. To ensure everything goes smoothly moving forward, we will setup the majority of those tools in this homework.  This homework will not be graded **except** for Problem 2. In Problem 2 you set up git and github for this course, which is essential before starting with HW 1.
 
 ## Problem 1 - Class Survey, Signups, and Introduction
 
