@@ -40,7 +40,7 @@ Follow the instructions given in [Section 1](https://github.com/CS171/2015-secti
 
 Answer the written questions in a file called [answers.md](answers.md). Preceed each answer with the question number. Be brief and to the point, don't write overly long answers. 
 
-For questions 1 to 4, create and write your code in the file [table.html](table.html), and question 5 and 6 in the [barchart.html](barchart.html) file.
+For questions 1 to 4, create and write your code in the file `table.html`, and question 5 and 6 in the `barchart.html` file.
 
 ## 1 - Improving the table presentation
 
@@ -92,7 +92,7 @@ Let's now improve the visual design of the table to look like the example below:
 	<img src="img/table_html.gif" width="500"/>
 </p>
 
-* Create a file [table.html](table.html) by duplicating the code from the [GIST](http://bl.ocks.org/romsson/900783b4eca5304b1970) mentioned above which is available in [table_example.html](table_example.html).
+* Create a file `table.html` by duplicating the code from the [GIST](http://bl.ocks.org/romsson/900783b4eca5304b1970) mentioned above which is available in [table_example.html](table_example.html).
 
 * Remove the columns that are not displayed in the figure above. One way to do this is to create the list of desired columns as an array that will (1) drive the creation of the headers (`<th>`) and (2) will be used to filter the dataset for each row (`<tr>`) and create the correct cells (`<td>`).
 
@@ -257,7 +257,7 @@ Re-implement the previous interactions (sorting, filtering, and time change) as 
   <img src="img/barchart_svg.gif" width="500"/>
 </p>
 
-* Create a file [barchart].html](barchart.html) by duplicating the code from the [GIST](http://bl.ocks.org/romsson/1ac89b1816b250997a2a) mentioned above, which is available in [barchart_example.html](barchart_example.html).
+* Create a file `barchart.html` by duplicating the code from the [GIST](http://bl.ocks.org/romsson/1ac89b1816b250997a2a) mentioned above, which is available in [barchart_example.html](barchart_example.html).
 
 * Use the previous dataset [data/countries_1995_2012.json](data/countries_1995_2012.json) to create an SVG horizontal bar chart. Note that in this application, HTML `<tr>` rows (containing `<td>` elements) are analogous to SVG groups `<g>` containing both `<text>` and `<rect>` elements.
 
