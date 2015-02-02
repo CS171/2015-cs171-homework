@@ -247,7 +247,7 @@ circle
 How about more circles?
 
 ```js
-var circle2 = svg.append("circle");
+var circle2 = svg.append("circle")
     .attr("cx", 300)
     .attr("cy", 100)
     .attr("r", 40)
