@@ -33,6 +33,11 @@ git config --global user.email "YOUR EMAIL ADDRESS"
 
 `cd` to the directory you want put your homework in (e.g., your Documents folder). *ensure the concept of a working directory is clear*
 
+What we going to do as overview:
+![Setting up your Github repository](images/section1_github.png?raw=true)
+
+
+
 Run the following:
 
 ```
