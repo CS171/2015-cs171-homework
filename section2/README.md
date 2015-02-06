@@ -450,7 +450,7 @@ We already have a variable for `d3.select("rect")` (`rect`), so `rect.select("ti
 
 
 Additional explanations: JavaScript concepts
-___
+---
 
 This section gives only a short intro to some core concepts in JavaScript.
 
