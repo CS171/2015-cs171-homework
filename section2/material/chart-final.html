@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="http://d3js.org/d3.v3.min.js"></script>
+  <style type="text/css">
+    body {
+      width: 800px;
+      margin: 25px auto;
+      font-family: "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+    }
+    rect {
+        fill-opacity: 0.8;
+    }
+    rect:hover {
+        fill-opacity: 1;
+    }
+  </style>
+</head>
+<body>
+  <h1>Section 2: Data-driven documents</h1>
+
+  <div>
+    <strong>Filter:</strong>
+    <label><input type="checkbox" name="US" value="1" id="filter-us-only" />US only</label>
+  </div>
+
+  <script type="text/javascript">
+
+  var margin = {top: 40, bottom: 10, left: 20, right: 20};
+  var width = 800 - margin.left - margin.right;
+  var height = 600 - margin.top - margin.bottom;
+
+  // Creates sources <svg> element
+  var svg = d3.select("body").append("svg")
+              .attr("width", width+margin.left+margin.right)
+              .attr("height", height+margin.top+margin.bottom);
+
+  // Group used to enforce margin
+  var g = svg.append("g")
+              .attr("transform", "translate("+margin.left+","+margin.top+")");
+
+  // Global variable for all data
+  var data;
+
+  var bar_height = 50;
+
+  // Scales setup
+  var scale = d3.scale.linear()
+    .range([0, width]);
+
+  /////////////////////////
+
+  d3.json("http://api.openweathermap.org/data/2.5/group?id=5391959,4930956,5128581,1850147,4140963,5368361,3530597,1835848,1816670,2643743&units=imperial", function(json) {
+    data = json.list.map(function(d) {
+      return {"temperature": d["main"]["temp"], "location": {"city": d["name"], "country": d["sys"]["country"]}};
+    });
+
+    scale.domain([0, 200]);  // This should use d3.max() and be based on the data
+
+    var rect = g.selectAll("rect")
+        .data(data)
+      .enter().append("rect")
+      .attr("fill", "steelblue")
+      .attr("width", function(d, i) {
+          return scale(d["temperature"]);
+      })
+      .attr("height", bar_height)
+      .attr("x", 0)
+      .attr("y", function(d, i) {
+          // this could instead use an ordinal scale and rangeRoundBands()
+          return (bar_height + 5) * i;
+      });
+
+    rect.append("title")
+      .text(function(d, i) {
+        return d["location"]["city"];
+      });
+  });
+
+  d3.select("#filter-us-only").on("change", function() {
+    // This will be triggered when the user selects or unselects the checkbox
+
+    if (d3.select(this).property('checked') == true) {
+      // Checkbox was just checked
+
+      var filtered_data = data.filter(function(d) {
+        // Keep only data element whose country is US
+        return d["location"]["country"] == "US";
+      })
+
+      update(filtered_data);  // Update the chart with the filtered data
+    } else {
+      // Checkbox was just unchecked
+      update(data);  // Update the chart with all the data we have
+    }
+  });
+
+  function update(new_data) {
+    // Render the chart with new data
+
+    // DATA JOIN
+    var rect = g.selectAll("rect")
+        .data(new_data);
+
+    // UPDATE
+    // old elements
+    // No canges needed to updated elements
+    // rect...
+
+    // ENTER
+    // new elements
+    rect.enter().append("rect")
+      .attr("fill", "steelblue")
+      .attr("height", bar_height)
+      .attr("x", 0);
+
+    // ENTER + UPDATE
+    // both old and new elements
+    rect
+      .attr("width", function(d, i) {
+          return scale(d.temperature);
+      })
+      .attr("y", function(d, i) {
+          return (bar_height + 5) * i;
+      });
+
+    // EXIT
+    // elements that aren't associated with data
+    rect.exit().remove();
+
+    rect.select("title")
+      .text(function(d, i) {
+        return d["location"]["city"];
+      });
+  }
+
+  </script>
+</body>
+</html>

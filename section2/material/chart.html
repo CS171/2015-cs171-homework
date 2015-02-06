@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="http://d3js.org/d3.v3.min.js"></script>
+  <style type="text/css">
+    body {
+      width: 800px;
+      margin: 25px auto;
+      font-family: "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+    }
+    rect {
+        fill-opacity: 0.8;
+    }
+    rect:hover {
+        fill-opacity: 1;
+    }
+  </style>
+</head>
+<body>
+  <h1>Section 2: Data-driven documents</h1>
+
+  <script type="text/javascript">
+
+  var margin = {top: 40, bottom: 10, left: 20, right: 20};
+  var width = 800 - margin.left - margin.right;
+  var height = 600 - margin.top - margin.bottom;
+
+  // Creates sources <svg> element
+  var svg = d3.select("body").append("svg")
+              .attr("width", width+margin.left+margin.right)
+              .attr("height", height+margin.top+margin.bottom);
+
+  // Group used to enforce margin
+  var g = svg.append("g")
+              .attr("transform", "translate("+margin.left+","+margin.top+")");
+
+  /////////////////////////
+
+  var data = [10, 45, 105, 69, 80, 55, 180];
+
+  var bar_height = 50;
+
+  var scale = d3.scale.linear()
+    .domain([0, 200])
+    .range([0, width]);
+
+  var rect = g.selectAll("rect")
+      .data(data)
+    .enter().append("rect")
+    .attr("fill", "steelblue")
+    .attr("width", function(d, i) {
+        return scale(d);
+    })
+    .attr("height", bar_height)
+    .attr("x", 0)
+    .attr("y", function(d, i) {
+        // this could instead use an ordinal scale and rangeRoundBands()
+        return (bar_height + 5) * i;
+    });
+
+  </script>
+</body>
+</html>
