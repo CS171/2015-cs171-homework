@@ -116,7 +116,11 @@ rect
 
 ### Scales
 
-Our `d * 3` is clunky and hardcoded for this dataset. We really need a function to map the input to the output — compressing or contracting the range as needed. We need a *scale*.
+Our `d * 3` is clunky and hardcoded for this dataset. We really need a function to map the input to the output — compressing or contracting the range as needed.
+
+[![D3 scales](http://i0.wp.com/www.jeromecukier.net/wp-content/uploads/2011/08/d3scalePower.png)](http://www.jeromecukier.net/blog/2011/08/11/d3-scales-and-color/)
+
+We need a *scale*.
 
 ```js
 var scale = d3.scale.linear()
@@ -423,6 +427,8 @@ Let's remove them.
 ```
 
 Let's try it now. Nice!
+
+These concepts are important: [Three Little Circles](http://strongriley.github.io/d3/tutorial/circle.html) might help you grasp it further.
 
 Oh, but notice the fourth bar: we're not updating tooltips.
 
