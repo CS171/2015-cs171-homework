@@ -38,7 +38,7 @@ Ensure you respond to questions in the appropriate text file (as described in th
 
 Follow the instructions given in [Section 1](https://github.com/CS171/2015-section1) to clone the repository.
 
-Answer the written questions in a file called [answers.md](answers.md). Preceed each answer with the question number. Be brief and to the point, don't write overly long answers. 
+Answer the written questions in a file called [answers.md](answers.md). Precede each answer with the question number. Be brief and to the point, don't write overly long answers. 
 
 For questions 1 to 4, create and write your code in the file `table.html`, and question 5 and 6 in the `barchart.html` file.
 
@@ -48,7 +48,7 @@ The goal of this question is to load the countries dataset into a table, to impr
 
 ### Dataset
 
-We provide a copy of the dataset [data/countries_2012.json](data/countries_2012.json) from the [World Bank](http://data.worldbank.org/data-catalog/world-development-indicators) which contains demographic and economic indicators for 120 countries for the year 2012. Each entry represents a country; attributes describe the country: continent, sub-continent, and area. Here is a sample of the data for Afghanistan:
+We provide a copy of the dataset [data/countries_2012.json](data/countries_2012.json) from the [World Bank](http://data.worldbank.org/data-catalog/world-development-indicators) which contains demographic and economic indicators for 119 countries for the year 2012. Each entry represents a country; attributes describe the country: continent, sub-continent, and area. Here is a sample of the data for Afghanistan:
 
 ```json
 {
