@@ -35,13 +35,14 @@
         xScale.domain([min, max]);
         yScale.domain(data.map(function(d) { return d.name; }));
  
-        var groups = g.append("g")
-                    .selectAll("text")
+        var rows = g.append("g")
+                    .selectAll("g.row")
                     .data(data)
                   .enter()
-                    .append("g");
+                    .append("g")
+                    .attr("class", "row")
  
-        var bars = groups
+        var bars = rows
                     .append("rect")
                     .attr("width", function(d) { return xScale(d.population); })
                     .attr("height", 5)
