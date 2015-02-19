@@ -117,7 +117,7 @@ Let's implement data filtering and add UI elements to toggle it. Your result sho
 * Add [HTML checkboxes](http://www.w3.org/TR/html5/forms.html#checkbox-state-(type=checkbox)) for each continent. To link them to the table, you need to trigger events when the checkboxes are changed. The `onchange` attribute can be used to listen to changes by the user. The code below opens a pop-up for every change:
 
 ```html
-<label>Americas<input type="checkbox" name="Americas" value="Americas" title="Americas" onchange"('changed!')"></input></label>
+<label>Americas<input type="checkbox" name="Americas" value="Americas" title="Americas" onchange="alert('changed!')"></input></label>
 ```
 
 * If multiple check-boxes are selected use all the selected ones to filter countries (or combinations of filters).
