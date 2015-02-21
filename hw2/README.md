@@ -155,7 +155,7 @@ In the previous examples, points were positioned based on a global function that
 
 ### Implementation Task
 
-* First, create horizontal groups, one for each continent, for the force layout. This is similar to this [multi-foci force layout](http://bl.ocks.org/mbostock/1021841) example, except that you will create an ordinal scale to layout the groups as in the figure below:
+* First, create horizontal groups, one for each continent, for the force layout. This is similar to this [multi-foci force layout](http://bl.ocks.org/DavidChouinard/fbd8889e8fbb5ffbabce) example, except that you will create an ordinal scale to layout the groups as in the figure below:
 
 <p align="center">
   <img src="img/force_horizontal_foci.gif" height="300"/>
