@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="http://d3js.org/d3.v3.min.js"></script>
+  <style type="text/css">
+    body {
+      width: 800px;
+      margin: 25px auto;
+      font-family: "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+    }
+    circle {
+      fill: steelblue;
+      fill-opacity: 0.8;
+    }
+  </style>
+</head>
+<body>
+  <h1>Section 3: Exploring positional data encoding</h1>
+
+  <script type="text/javascript">
+
+  var margin = {top: 40, bottom: 10, left: 20, right: 20};
+  var width = 800 - margin.left - margin.right;
+  var height = 600 - margin.top - margin.bottom;
+
+  // Creates sources <svg> element and inner g (for margins)
+  var svg = d3.select("body").append("svg")
+              .attr("width", width+margin.left+margin.right)
+              .attr("height", height+margin.top+margin.bottom)
+            .append("g")
+              .attr("transform", "translate("+margin.left+","+margin.top+")");
+
+  /////////////////////////
+
+  d3.json("characters.json", function(data) {
+    console.log(data);
+
+    // Nodes data join
+    var node = svg.selectAll(".node")
+        .data(data);
+
+    node
+      .enter().append("circle");
+
+    node
+      .attr("class", "node")
+      .attr("r", 10)
+      .attr("cx", function(d) {
+          return Math.random() * width;
+      }).attr("cy", function(d) {
+          return Math.random() * height;
+      });
+
+    node
+      .exit()
+      .remove();
+  });
+
+  </script>
+</body>
+</html>
