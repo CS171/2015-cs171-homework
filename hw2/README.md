@@ -20,7 +20,7 @@ The second part of this homework is your design studio implementation. We ask yo
 
 ### Instructions
 
-Answer the written questions in a file called [answers.md](answers.md). Precede each answer with the question number. Be concise and to the point, don't write overly long answers. Please use [markdown syntax](https://help.github.com/articles/markdown-basics/). Write your code for part one in a file called [graph.html](graph.html).
+Answer the written questions in a file called [answers.md](answers.md). Precede each answer with the question number. Be concise and to the point, don't write overly long answers. Please use [markdown syntax](https://help.github.com/articles/markdown-basics/). Write your code for problems 1-3 in a file called [graph.html](graph.html).
 
 For your design studio code, explain your design in a file [design.md](design.md), where you also include scans or photographs of your alternate designs, and write your code in a file called [design.html](design.html) (you may add more files if needed, but this file should be the main one to run your code). Put supplementary material (e.g., screen-shots, sketches, etc.) in an `/design/` folder.
 
