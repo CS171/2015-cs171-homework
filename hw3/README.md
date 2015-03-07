@@ -246,7 +246,7 @@ Create a brush that reacts to mouse interactions on top of your created visualiz
 
 Congratulations! You just created a visualization for the total number of votes per day and the users can select a time frame from your graph via brushing. Next we will introduce some (optional) advanced interaction techniques, and then add connected views.
 
-### Bonus Task 3c (extra 0.5 points): Non-linear scale deformation <img src="img/advanced_logo_small.png" width="100"/>
+#### Bonus Task 3c (extra 0.5 points): Non-linear scale deformation <img src="img/advanced_logo_small.png" width="100"/>
 
 A linear mapping can be expressed as
 <p align="center" style="font-size:10pt;">
