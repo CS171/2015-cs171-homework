@@ -2,12 +2,12 @@ Homework 3
 ===
 *This homework is due on Friday, March 27th 2015, 11:59 pm*
 
-In this homework assignment you will create an interactive visualization using [D3.js](http://d3js.org). While the previous homework assignments were about iterating on one single visualization, the goal of this homework is to connect several pieces into an interactive multiple, coordinated views (MCV) system. You will implement some of the principles introduced in the ["Interaction" lecture](http://cm.dce.harvard.edu/2015/02/24028/L08/screen_H264MultipleHighLTH-16x9.shtml). 
+In this homework assignment you will create an interactive visualization using [D3.js](http://d3js.org). While the previous homework assignments were about iterating on a single visualization, the goal of this homework is to connect several pieces into an interactive multiple, coordinated views (MCV) system. You will implement some of the principles introduced in the ["Interaction" lecture](http://cm.dce.harvard.edu/2015/02/24028/L08/screen_H264MultipleHighLTH-16x9.shtml). 
 
-For this assignment you will use data from the United Nations [MY World 2015](http://www.myworld2015.org/?page=about-my-world) vote project. MY World is a global survey commissioned by the UN Millenium Project. It aims to capture people's opinions, priorities, and views on major issues, so that global leaders can be informed as they begin the process of defining the new development agenda for the world. Individuals are asked which six of sixteen possible issues they think would make the most difference to their lives. The sixteen issues are based on the priorities expressed by poor people in previous research and polling exercises. They cover the existing Millennium Development Goals and add issues of sustainability, security, governance and transparency. 
+For this assignment you will use data from the United Nations [MY World 2015](http://www.myworld2015.org/?page=about-my-world) vote project. MY World is a global survey commissioned by the UN Millennium  Project. It aims to capture people's opinions, priorities, and views on major issues, so that global leaders can be informed as they begin the process of defining the new development agenda for the world. Individuals are asked which six of sixteen possible issues they think would make the most difference to their lives. The sixteen issues are based on the priorities expressed by poor people in previous research and polling exercises. They cover the existing Millennium Development Goals and add issues of sustainability, security, governance and transparency. 
 The data is collected using the [MY World webpage](http://www.myworld2015.org/), text messages, and printed surveys. 
 
-You will build a system that allows interactive selection of time slices of the poll data from the years 2012 and 2013. For the selected time period, the visualization will show the amount of votes per priority/choice from the poll data in addition to a histogram of participant's age for the given selection. The image below and **[this Youtube video](http://youtu.be/Hlc4bGhgbKU)** show the (interactive) final product:
+You will build a system that allows interactive selection of time slices of the poll data from the years 2012 and 2013. For the selected time period, the visualization will show the amount of votes per priority/choice from the poll data in addition to a histogram of participant's age for the given selection. The image below and **[this YouTube video](http://youtu.be/Hlc4bGhgbKU)** show the (interactive) final product:
 <p align="center">
     <img src="img/goal_hw.png" width="600"/>
 </p>
@@ -18,14 +18,14 @@ After completing this homework you will be able to:
   - Select subsets of your data via brushing.
   - Show different facets of your data with multiple linked views.
   - Create an event handler to connect interacting parts of your project.
-  - Integrate zooming into your visualizations. (extra credit only)
+  - Integrate zooming into your visualizations (extra credit only).
   
 
 To solve this assignment you should know about:
 
-- the basics of D3js: selections (select, enter, exit), data driven attributes, transitions
-- how to create scales and axis in D3
-- how to create an area chart and a bar chart in D3
+- the basics of D3js: selections (select, enter, exit), data driven attributes, transitions;
+- ow to create scales and axis in D3;
+- how to create an area chart and a bar chart in D3.
 
 
 ## 0. Feedback 
@@ -42,7 +42,7 @@ This homework will bring you a step closer to implementing complex designs, such
 The homework splits a complex problem into smaller, easier-to-tackle sub-problems. Each sub-problem will be solved independently. 
 The source you produce for the sub-tasks should then be integrated into the final system.
 
-Problem 2 (Data Wrangling), for example, focusses on data handling as a subtask of the whole project. 
+Problem 2 (Data Wrangling), for example, focuses on data handling as a subtask of the whole project. 
 After you finished Problem 2 you should have two functions at hand:
 
 1. a function for loading multiple files asynchronously,
@@ -117,13 +117,13 @@ Some contextual information:
 - All data is aggregated **per day** (`"day"`) for all days in 2012 and 2013.
 - The count of all votes on this day are stored in the field `"count(*)"` 
 - The counts of all votes for priority 1 (`"sum(p0)"`) to priority 16 (`"sum(p15)"`) are accessible by the field names given in brackets. Mind the difference in indexing priorities  (priority **1** <=> p**0**).
-- The daily sum of votes for different education levels of participants are stored in the array `"education"`. Each object in this array represents one education level (field `"education"`) and it's respective count (field `"count(*)"`)
+- The daily sums of votes for different education levels of participants are stored in the array `"education"`. Each object in this array represents one education level (field `"education"`) and it's respective count (field `"count(*)"`)
 - Equivalent to education levels, counts for each year of age are stored in the array `"age"`.
 
-Make sure to unpack the file `data/perDayData.json.zip` as `data/perDayData.json`. You don't need to add and commit the unzipped file to your repository, this will keep the size of your repository smaller.
+Make sure to unpack the file `data/perDayData.json.zip` as `data/perDayData.json`. You don't need to add and commit the unzipped file to your repository; this will keep the size of your repository smaller.
 
 
-A second file (**MyWorld_fields.json**) contains meta-information about our data. For now, we are interested in the `"priorities"` object which gives us informations for each priority. Again, the priorities are numbered from 0 (priority 1) to 15 (priority 16). You can easily access information for priority 6 via `priority["5"]`. 
+A second file (**MyWorld_fields.json**) contains meta-information about our data. For now, we are interested in the `"priorities"` object that gives us information for each priority. Again, the priorities are numbered from 0 (priority 1) to 15 (priority 16). You can easily access information for priority 6 via `priority["5"]`. 
 
 Here is a sample:
 
@@ -262,7 +262,7 @@ logarithmic mapping of **data** values to **display** size
 
 See, for example, the [Semi-log plot](http://en.wikipedia.org/wiki/Semi-log_plot). 
 
-This method has two drawbacks: the logarithmic function is usually not parametrizable, and the value of *log(0)* is infinite.
+This method has two drawbacks: the logarithmic function is usually not parameterizable, and the value of *log(0)* is infinite.
 
 We will use a power scale ([d3 link](https://github.com/mbostock/d3/wiki/Quantitative-Scales#power-scales)) that transforms the data by taking it to the power of an exponent. 
 <p align="center" style="font-size:10pt;">
@@ -328,7 +328,7 @@ These two functions can be used together to create a simple [event handler](http
 Create an event handler in ***index.html*** and trigger an event called '*selectionChanged*' during brushing (remember which function is called during a brush) in ***js/countvis.js***.
 
 #### Task 4b: Create the Visualization for the Age Distribution
-Create a vertical area chart that shows the distribution of respondents' ages in the current selection. Use the event handler and the aggregtion function to integrate this visualization so that it adapts to changes in the brush selection. Bind the `onSelectionChange(startDate, endDate)` method to listen to the '*selectionChanged*' from the event handler in ***index.html***. Your result should look like this:
+Create a vertical area chart that shows the distribution of respondents' ages in the current selection. Use the event handler and the aggregation function to integrate this visualization so that it adapts to changes in the brush selection. Bind the `onSelectionChange(startDate, endDate)` method to listen to the '*selectionChanged*' from the event handler in ***index.html***. Your result should look like this:
 
 <p align="center" style="font-size:10pt;">
     <img src="img/agevis.gif" width="500"/><br/>
@@ -351,7 +351,7 @@ Implement a bar chart that shows the frequency of selection of the 16 issues and
 The goal of this design studio is to develop/enhance the visualization to address the following task. 
 
 In our visualization the data in the priority issue visualization and the age distribution visualization changes based on the selected time range. Whenever we change the selection (by brushing), the values and scales change. The number of changes that happen during brushing make it nearly impossible to track them all. To overcome this limitation (at least partially) you should create ideas to allow comparisons of values in the priority issue visualization. 
-Lets assume that there are two ideas for comparisons: you could compare data of two selected time-intervales, or you could compare the selected data against overall averages.
+Lets assume that there are two ideas for comparisons: you could compare data of two selected time-intervals, or you could compare the selected data against overall averages.
 
  * Choose **one** comparison scenario and create at least three alternative designs that would allow this comparison. 
  * Implement one design in your visualization for the priority issues and explain why you have chosen this design.
