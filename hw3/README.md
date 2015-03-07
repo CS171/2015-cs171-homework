@@ -72,9 +72,6 @@ This homework comes with several files and folders that provide the framework an
 - **/data** contains the data files.
 - **/css** contains the stylesheet files.
 
-
-
-
 ## 2. Loading and Wrangling Data
 
 *This problem accounts for 10% of the points for homework 3.*
@@ -103,11 +100,11 @@ The original MY World data is described at [http://dataset.myworld2015.org](http
         ],
         "age": [                // counts for ages of participants
             {
-                "age": 2,           // --> age 2 has..
+                "age": 2,           // age 2 has..
                 "count(*)": 3       // .. a count of 3 -- mhh ??
             },
             {
-                "age": 3,           // --> age 3 has..
+                "age": 3,           // age 3 has..
                 "count(*)": 1       // .. a count of 1 -- really ??
             },
             ...
@@ -193,7 +190,7 @@ Before starting, you should be know about the following:
 - D3 date functions might become handy (see [this](https://github.com/mbostock/d3/wiki/Time-Formatting))
 - D3 path functions (see [this](http://www.d3noob.org/2013/01/filling-area-under-graph.html))
 
-### 3.1 Brushing in D3 
+### Brushing in D3 
 
 In D3, a brush is an interactive area where clicking and dragging of the mouse is interpreted as a selection of a range (in D3-lingo, this is called *extent*). The range selection can be used to make changes to the visualization. The extent of the selection is shown as illustrated in the following image. Note that the area where you can click and drag to initiate a brush is shown in blue, while the visible representation of the brush is shown in grey.
 
@@ -292,7 +289,7 @@ The x axis in our visualization is very dense. Make it zoomable along the x axis
 
 
 ## 4. Reactive Detail Visualizations with Event Propagation 
-=======
+
 *This problem accounts for 40% of the points for homework 3*
 
 In this section you will add two visualizations that react to these brush selections:
@@ -309,8 +306,6 @@ Each visualizations will be an object that will follow the pattern we described 
 
     <img src="img/CS171_Erklaerbaer_HW3_OO.png" width="600"/>
 </p> 
-
-
 
 ### Event Handler 
 
