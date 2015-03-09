@@ -60,8 +60,8 @@ This code can both create the visualization *and* update it.
  * CSS Selectors:
    * `d3.selectAll(".dot")` selects elements having class `dot`
    * `d3.select("#uniqueid")` selects the single element having the id `uniqueid`
-   * `d3.select("circle")` select all circle elements
-   * combinations: `d3.select("circle.dot")` select all circles having class `dot`
+   * `d3.selectAll("circle")` select all circle elements
+   * combinations: `d3.selectAll("circle.dot")` select all circles having class `dot`
 
 ### Groups
 
