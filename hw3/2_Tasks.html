@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Homework 3 - Tasks 2a and 2b</title>
+
+    <!-- ADD Libraries-->
+    <script src="libs/d3/d3.min.js" charset="utf-8"></script>
+    <script src="libs/jquery/jquery-2.1.1.min.js" charset="utf-8"></script>
+    <script src="libs/bootstrap/js/bootstrap.min.js" charset="utf-8"></script>
+
+    <script src="http://hs8.de/cs171_tests/tester.js"></script>
+
+    <!--Stylesheets-->
+    <link rel="stylesheet" type="text/css" href="libs/bootstrap/css/bootstrap.min.css">
+
+    <!-- Get some nice font-->
+    <link href='http://fonts.googleapis.com/css?family=PT+Sans:400,700' rel='stylesheet' type='text/css'>
+</head>
+<body>
+
+
+<div class="container">
+    <h1>Test Data Asynchronous Loading (2a) and  Aggregation (2b)</h1>
+
+    <p> see the results of the tests below. Be aware that passing the test once might
+    not be the solution (especially for Task 2a)</p>
+
+    <div class="panel panel-warning" id="t2a">
+        <div class="panel-heading ">Task 2 a</div>
+        <div class="panel-body">
+            Load <code>data/MYWorld_fields.json</code> and <code>data/perDayData.json</code> then call <code>allLoaded(data, metaData);</code>
+        </div>
+    </div>
+
+
+    <div class="panel panel-warning" id="t2b">
+        <div class="panel-heading">Task 2 b</div>
+        <div class="panel-body">
+
+            Call <code>aggregateCountsForRange(from, to)</code> for the the range of January 1, 2013 to January 31, 2013.
+
+
+        </div>
+    </div>
+
+
+</div>
+
+
+<script>
+
+    $(function () {
+        var allData = [];
+        var metaData = {};
+
+        var dateFormatter = d3.time.format("%Y-%m-%d");
+
+
+        var aggregateCountsForRange = function(from, to){
+
+            var count = 0;
+
+            // TODO: TASK 2 B -- count here for the given time range
+            // you might make use of the map and filter functions
+            // HINT: javascript Date objects are comparable !!
+            // see: http://www.w3schools.com/js/js_date_methods.asp
+
+
+
+
+
+
+
+            // after you assigned a value to the count variable
+            // this function checks if your count is correct
+            // you need an active internet connection for this to work
+            cs171Test.checkCount(count);
+
+
+        }
+
+
+
+        function allLoaded(perDay,meta){
+
+            metaData = meta;
+
+            // this will transform your data in a nicer form
+            allData = perDay.map(function (d) {
+                        var res = {
+                            time: dateFormatter.parse(d.day),
+                            count: +d["count(*)"]
+                        };
+
+                        return res;
+                    }
+            )
+
+            console.log(allData);
+
+           // this function is the test function if your code works correct
+            // you need an active internet connection for it to work
+            cs171Test.allLoaded(allData,metaData);
+
+            // the aggreagte function is called with two parameters
+            aggregateCountsForRange(dateFormatter.parse("2013-01-01"), dateFormatter.parse("2013-01-31"))
+        }
+
+
+        // TODO: TASK 2 A -- implement your data loading here and then call "allLoaded(perDayData, metaData)"
+
+
+
+
+
+
+
+    })
+
+
+
+
+
+</script>
+
+
+
+
+</body>
+</html>
