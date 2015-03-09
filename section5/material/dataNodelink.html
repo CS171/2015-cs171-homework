@@ -60,22 +60,21 @@
     graph_A.nodes = simpsons;
 
     // create a mapping of simpson id to index in the nodes array
-    var simpsonNameToIndexMap = d3.map(); // see: https://github.com/mbostock/d3/wiki/Arrays#user-content-maps
+    var simpsonNameToIndexMap = {};
 
     graph_A.nodes.forEach(function(aSimpson, index ){
-        simpsonNameToIndexMap.set(aSimpson.name, index);
+        simpsonNameToIndexMap[aSimpson.name] = index;
     })
 
     // --------- LOGGING -------------
-    console.log("Map test A:", simpsonNameToIndexMap.get("homer"), simpsonNameToIndexMap.get("smithers"));
+    console.log("Map test A:", simpsonNameToIndexMap["homer"], simpsonNameToIndexMap["smithers"]);
 
 
     graph_A.nodes.forEach(function(parentSimpson, sourceIndex){
 
-
         parentSimpson.isParentTo.forEach(function(nameOfChild){
             // get index position of child
-            var targetIndex = simpsonNameToIndexMap.get(nameOfChild)
+            var targetIndex = simpsonNameToIndexMap[nameOfChild];
             if (targetIndex != undefined){
                 graph_A.links.push({source: sourceIndex, target: targetIndex});
             }
@@ -101,7 +100,7 @@
     graph_B.nodes = simpsons;
 
     // create a map and use the return value of the function as key (here d.name)
-    var simpsonNameToObjectMap = d3.map(simpsons, function(d){return d.name});
+    var simpsonNameToObjectMap = d3.map(simpsons, function(d){return d.name}); // see: https://github.com/mbostock/d3/wiki/Arrays#user-content-maps
 
     console.log("Map test B:",simpsonNameToObjectMap.get("homer"), simpsonNameToObjectMap.get("smithers"));
 
