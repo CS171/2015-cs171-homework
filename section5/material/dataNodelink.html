@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+
+
+</head>
+<body>
+
+<div id="vis">
+</div>
+
+
+<script>
+
+
+    var simpsons = [
+        {
+            name: "homer",
+            isParentTo: [ "bart", "maggie", "lisa"]
+        },{
+            name: "bart",
+            isParentTo: []
+        },
+        {
+            name: "lisa",
+            isParentTo: []
+        },
+        {
+            name: "marge",
+            isParentTo: [  "bart", "maggie", "lisa"]
+        },
+        {
+            name:"grandpa",
+            isParentTo: ["homer"]
+        }
+
+    ]
+
+
+    console.log(simpsons);
+
+
+    /* ---------------
+    * wrangle the data
+    * ---------------- */
+
+
+    /*
+     * Option A -- CREATE THE LINKS VIA INDEX Numbers
+     * */
+
+    var graph_A = {
+        nodes:[],
+        links:[]
+    }
+
+
+    // convert simpsons into nodes and links
+    graph_A.nodes = simpsons;
+
+    // create a mapping of simpson id to index in the nodes array
+    var simpsonNameToIndexMap = d3.map(); // see: https://github.com/mbostock/d3/wiki/Arrays#user-content-maps
+
+    graph_A.nodes.forEach(function(aSimpson, index ){
+        simpsonNameToIndexMap.set(aSimpson.name, index);
+    })
+
+    // --------- LOGGING -------------
+    console.log("Map test A:", simpsonNameToIndexMap.get("homer"), simpsonNameToIndexMap.get("smithers"));
+
+
+    graph_A.nodes.forEach(function(parentSimpson, sourceIndex){
+
+
+        parentSimpson.isParentTo.forEach(function(nameOfChild){
+            // get index position of child
+            var targetIndex = simpsonNameToIndexMap.get(nameOfChild)
+            if (targetIndex != undefined){
+                graph_A.links.push({source: sourceIndex, target: targetIndex});
+            }
+
+        })
+
+    })
+
+    console.log("Graph A: ", graph_A);
+
+
+
+    /*
+     * Option B -- CREATE THE LINKS VIA direct objects
+     *
+     * */
+
+    var graph_B = {
+        nodes:[],
+        links:[]
+    }
+
+    graph_B.nodes = simpsons;
+
+    // create a map and use the return value of the function as key (here d.name)
+    var simpsonNameToObjectMap = d3.map(simpsons, function(d){return d.name});
+
+    console.log("Map test B:",simpsonNameToObjectMap.get("homer"), simpsonNameToObjectMap.get("smithers"));
+
+    graph_B.nodes.forEach(function(parentSimpson){
+
+        parentSimpson.isParentTo.forEach(function(nameOfChild){
+            var childSimpson = simpsonNameToObjectMap.get(nameOfChild)
+            if (childSimpson != undefined){
+                graph_B.links.push({source: parentSimpson, target: childSimpson});
+            }
+
+        })
+
+    })
+
+    console.log("Graph B: ",graph_B);
+
+
+
+
+
+        /*
+        *
+        * Just draw it
+        * */
+
+
+        var margin = {top: 40, right: 10, bottom: 20, left: 10},
+                width = 960 - margin.left - margin.right,
+                height = 800 - margin.top - margin.bottom;
+
+        var svg = d3.select("#vis").append("svg")
+                .attr("width", width + margin.left + margin.right)
+                .attr("height", height + margin.top + margin.bottom)
+                .append("g")
+                .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+        var background = svg.append("g").attr({
+            class:"bgLayer"
+        })
+        var foreground = svg.append("g").attr({
+            class:"fgLayer"
+        })
+
+
+        // TODO: You can change the used graph structure here to graph_A/graph_B to show that it works the same
+        var usedGraph = graph_A;
+
+        var dots = foreground.selectAll(".dot")
+                .data(usedGraph.nodes)
+                .enter().append("circle")
+                .attr("class", "dot")
+    //            .attr("cx", function(d) { return d.x; })
+    //            .attr("cy", function(d) { return d.y; })
+                .attr("r", 8)
+        dots.append("title").text(function(d){return d.name;})
+
+        var lines = background.selectAll(".link")
+                .data(usedGraph.links)
+                .enter().append("line")
+                .attr("class", "link")
+                .style("stroke", "blue")
+
+
+    var force = d3.layout.force()
+                .nodes(usedGraph.nodes)
+                .links(usedGraph.links)
+                .size([width, height])
+                .linkStrength(0.1)
+                .friction(0.9)
+                .linkDistance(50)
+                .charge(-30)
+                .gravity(0.1)
+                .theta(0.8)
+                .alpha(0.1)
+                .on("tick", tick)
+                .start();
+
+        function tick(){
+            dots.attr("cx", function(d) { return d.x; })
+                .attr("cy", function(d) { return d.y; });
+
+
+            lines.attr({
+                "x1": function(d){return d.source.x;},
+                "y1": function(d){return d.source.y;},
+                "x2": function(d){return d.target.x;},
+                "y2": function(d){return d.target.y;}
+            })
+        }
+
+
+
+
+
+
+
+
+
+</script>
+
+</body>
+</html>

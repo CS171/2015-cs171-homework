@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <style>
+        h1 {
+            font-family: Tahoma, Arial, Helvetica, sans-serif;
+            font-size: 23px;
+            font-weight: normal;
+        }
+
+        table {
+            border-collapse: collapse;
+        }
+
+        thead {
+            font-weight: bold;
+        }
+
+        table td, table th, caption {
+            padding: 3px;
+            border: 1px solid gray;;
+        }
+
+        /* set a custom cursor indicating that you can click on it*/
+        table th {
+            cursor: n-resize;
+        }
+
+        /* zebra pattern by changing the background on even rows */
+        tr:nth-child(even) {
+            background-color: #d3d3d3;
+        }
+        /* column alignment */
+        table td {
+            text-align: right;
+        }
+        table td:first-child, table td:nth-child(2) {
+            text-align: center;
+        }
+    </style>
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+</head>
+<body>
+<!-- create ui interface -->
+
+<div>
+    <strong>Time update:</strong>
+    <!-- create a time range and assign a unique id: 'filter_time' -->
+    <label id = "min_time"></label><input type="range" id="filter_time" name="years" min="1995" max="2012" step="1" value="1995"><label id = "max_time"></label>
+</div>
+<div>
+    <strong>Filter by:</strong>
+    <!-- mark all continents as checked by default -->
+    <!-- use the same name but different values which are the continent's name -->
+    <label><input type="checkbox" name="filter_continent" value="Americas" checked="checked"/>Americas</label>
+    <label><input type="checkbox" name="filter_continent" value="Africa" checked="checked" />Africa</label>
+    <label><input type="checkbox" name="filter_continent" value="Asia" checked="checked" />Asia</label>
+    <label><input type="checkbox" name="filter_continent" value="Europe"  checked="checked"/>Europe</label>
+    <label><input type="checkbox" name="filter_continent" value="Oceania" checked="checked"/>Oceania</label>
+</div>
+<div>
+    <strong>Aggregate by:</strong>
+    <!-- use the same name enforcing toggling behavior -->
+    <label><input type="radio" name="aggregate" value="none" >None</label>
+    <label><input type="radio" name="aggregate" value="continent">Continent</label>
+</div>
+
+<script>
+    //##########################################################################
+    // context variables
+    //##########################################################################
+
+    var parameters = {
+        /**
+         * helper datastructure for the individual columns to show
+         */
+        columns: [
+            {
+                name: "name", //column name, i.e. the name of the property in the country object
+                label: 'Country',
+                //a function how to format the cells of this column
+                format: function(d) { return d; }, //return just the value
+                //how to rollup this column data values
+                rollup: function(names) { return names[0]; } //select the first countr'ies name --> DUMMY
+            },
+            {
+                name: "continent",
+                label: 'Continent',
+                format: function(d) { return d; }, //return just the value
+                //select the first continent - all should be the same
+                rollup: function(continents) { return continents[0]; }
+            },
+            {
+                name: "gdp",
+                label: 'GDP',
+                //format as float with grouping
+                format: d3.format("0,f"),
+                //return the sumo of gdps
+                rollup: function(gdps) { return d3.sum(gdps); }
+            },
+            {
+                name: "life_expectancy",
+                label: 'Life Expectancy',
+                format: d3.format("0.3r"),
+                //return the mean of life_expectancies
+                rollup: function(life_expectancies) { return d3.mean(life_expectancies); }
+            },
+            {
+                name: "population",
+                label: 'Population',
+                //use the scientific notation for this column
+                format: d3.format(".2s"),
+                rollup: function(population) { return d3.sum(population); }
+            },
+            {
+                name: "year",
+                label: 'Year',
+                format: function(d) { return d; }, //return just the value
+                //return use the first value, due to filtering all years should be the same
+                rollup: function(years) { return years[0] }
+            }
+        ],
+
+        data: null, //our raw data
+
+        //all related filter parameters
+        filter: {
+            year : 1995, //the year to show
+            continents: { //dictionary of all selected continents
+                Americas : true,
+                Europe : true,
+                Africa: true,
+                Asia : true,
+                Oceania: true
+            }
+        },
+
+        //sorting parameters
+        sort: {
+            by : 'name', //sort by which property?
+            asc: true //in ascending order?
+        },
+
+        //boolean flag if we should aggregate the data
+        aggregate: false,
+
+        //svg elements references
+        table : null,
+        thead : null,
+        tbody : null
+    };
+
+    //##########################################################################
+    // visualization initialization and data loading
+    //##########################################################################
+
+
+    d3.json("data/countries_1995_2012.json", function (error, data) {
+
+        parameters.data = flattenYears(data);
+
+        deriveYears();
+
+        initVis();
+
+        update();
+    });
+
+    /**
+     * create the basic elements of our visualization
+     **/
+    function initVis() {
+        //append a table to the html body
+        parameters.table = d3.select("body").append("table");
+        //add a nice table caption
+        parameters.table.append("caption").html("World Countries Ranking");
+        //add a thead and a header row for the column headers
+        parameters.thead = parameters.table.append("thead").append('tr');
+        //add a table body for the rows
+        parameters.tbody = parameters.table.append("tbody");
+    }
+
+    /**
+     * flatten the given complex data structure such that it will look like the countries_2012.json file by inlining common properties and flatten the array
+     **/
+    function flattenYears(data) {
+        var flat = [];
+
+        //for each country
+        data.forEach(function(country) {
+            //for each year in each country
+            country.years.forEach(function(year) {
+                //extend the year object with the common properties stored just once in the country object
+
+                year.name = country.name;
+                year.continent = country.continent;
+
+                //add it to the final flat array
+                flat.push(year);
+            })
+        });
+
+        return flat;
+    }
+
+    /**
+     * derive the min and maximal years in the dataset and update the time slider accordingly
+     */
+    function deriveYears() {
+        //get the min and max year
+        //d3.extent ... utility to compute the min and max year at once
+        var years = d3.extent(parameters.data.map(getter('year')));
+        var minYear = years[0];
+        var maxYear = years[1];
+
+        //select the first year
+        parameters.filter.year = minYear; //first year
+
+        //update the visual elements
+        d3.select('#min_time').text(minYear);
+        d3.select('#max_time').text(maxYear);
+        //update the time slider values
+        d3.select('#filter_time').attr({
+            min : minYear,
+            max : maxYear,
+            value: minYear
+        });
+    }
+
+
+    //##########################################################################
+    // update visualization
+    //##########################################################################
+
+    function update() {
+        //wrangle the data
+        var filteredData = wrangleData(parameters.data);
+        //update our vis
+        updateVis(filteredData);
+    }
+
+
+    //##########################################################################
+    // data wrangling
+    //##########################################################################
+
+    function wrangleData(rawData) {
+        //start with assigning the raw data to be our filtered data
+        var filteredData = rawData;
+
+        //filter by year
+        filteredData = filteredData.filter(function(row) {
+            return row.year === parameters.filter.year;
+        });
+
+        //just filter by continent if any continent is selected otherwise don't filter
+        if (anyContinentSelected()) {
+            filteredData = filteredData.filter(function (row) {
+                var continent = row.continent;
+                //check if the continent is set to true
+                return parameters.filter.continents[continent];
+            });
+        }
+
+        //should we aggregate
+        if (parameters.aggregate) {
+            //create a nested version
+            var nested = d3.nest()
+                    .key(getter('continent')) //group by continent
+                    .rollup(function(countries_in_continent) {
+                        //create a summary object r
+                        var aggregatedCountry = {};
+                        //each column has a method how to rollup its properties values
+                        //map all columns to their rollup version
+                        parameters.columns.forEach(function(col) {
+                            //map the countries to one property of the column
+                            var colValues = countries_in_continent.map(getter(col.name));
+                            //combine the values
+                            var aggregateValue = col.rollup(colValues);
+
+                            //store the aggregatedValue within the resulting object
+                            aggregatedCountry[col.name] = aggregateValue;
+                        });
+
+                        //return the summary object
+                        return aggregatedCountry;
+                    })
+                    .entries(filteredData); //apply it to our data
+
+            //map to the same style
+
+            filteredData = nested.map(function(entry) {
+                var aggregatedCountry = entry.values;
+                //set the name of our aggregatedCountry to be the continent, i.e. the key of our group
+                aggregatedCountry.name = entry.key;
+
+                return aggregatedCountry;
+            });
+        }
+
+        //create a helper function looking returning the property we are looking for
+        var sortGetter = getter(parameters.sort.by);
+
+        if (parameters.sort.asc) { //sort ascending
+            //sort our array given a compare function returning an integer:
+            // a < b -> < 0
+            // a > b -> > 0
+            // a == 0 -> = 0
+            filteredData = filteredData.sort(function(a,b) {
+                //compare the properties
+                var result = d3.ascending(sortGetter(a), sortGetter(b));
+                if (result === 0) { //simple check returns no difference use the countries name in case of this tie
+                    return d3.ascending(a.name, b.name);
+                }
+                return result;
+            });
+        } else {
+            filteredData = filteredData.sort(function(a,b) {
+                var result = d3.descending(sortGetter(a), sortGetter(b));
+                if (result === 0) { //simple check returns no difference use the countries name in case of this tie
+                    return d3.descending(a.name, b.name);
+                }
+                return result;
+            });
+        }
+
+
+        //all data wrangling done return the filtered data
+        return filteredData;
+    }
+
+    /**
+     * helper function determining if any continent was checked
+     * @return boolean whether any continent is filtered
+     **/
+    function anyContinentSelected() {
+        //check if any continent is set to true
+
+        //get the property names / key names of the parameter.filter.continents object i.e. the list of continents
+        var continents = Object.keys(parameters.filter.continents);
+        //is there some continent where its value within parameters.filter.continents is set to true?
+        return continents.some(function(continent) {
+            var isChecked = parameters.filter.continents[continent];
+            return isChecked === true;
+        });
+    }
+
+    //##########################################################################
+    // update visualization
+    //##########################################################################
+
+    /**
+     * updateVis
+     * @param data: the data array to visualize
+     **/
+    function updateVis(data) {
+        //update the table headers
+        updateHeaders();
+        //update the rows
+        updateRows(data);
+    }
+
+    /**
+     * update the table headers
+     **/
+    function updateHeaders() {
+        //data join
+        var theads= parameters.thead.selectAll("th").data(parameters.columns);
+
+        //enter
+        var theadsEnter = theads.enter()
+                .append("th")
+                .on("click", onHeaderClick); //when the user clicks on the header call the onHeaderClick function given by name
+
+        //update
+        theads.text(function(d) {
+            var label = d.label;
+            //sorted by this column -> change label
+            if (parameters.sort.by === d.name) {
+                //append special characters depending on ascending or descending using a shorthand if
+                label += parameters.sort.asc ? "▴" : "▾";
+            }
+            return label;
+        });
+
+        //exit
+        theads.exit().remove();
+    }
+
+    /**
+     * update the table body/rows
+     * @param data: the data to visualize
+     **/
+    function updateRows(data) {
+        //data join
+        var rows = parameters.tbody.selectAll("tr.row").data(data);
+        //enter phase
+        var rowsEnter = rows.enter()
+                .append("tr").attr("class", "row");
+
+        //manage the cells during the update phase
+        updateRow(rows);
+
+        rows.exit().remove();
+    }
+
+    /**
+     * update one specific row
+     * @param row: the update rows
+     **/
+    function updateRow(rows) {
+        //nested data join during update
+        var cells = rows.selectAll("td")
+                .data(function (row) { //mat the row to an array of cells
+                    return getCells(row);
+                });
+        //nested cells enter
+        var cellsEnter = cells.enter().append("td");
+
+        //cells update
+        cells.text(function(d, i) {
+            //use the index to determine the column, e.g. 0 ... name
+            var column = parameters.columns[i];
+            //the column has a function format for formatting its cell values
+            return column.format(d);
+        });
+
+        cells.exit().remove();
+    }
+
+    /**
+     * helper function determining the cell values for the given row
+     * @param row: the current data row to convert
+     * @return an array containing the cells values
+     */
+    function getCells(row) {
+        //map the row to the columns values
+        return parameters.columns.map(function(col) {
+            //lookup the column name in the given row and return it's value
+            return row[col.name];
+        });
+    }
+
+
+    //##########################################################################
+    // register interactive event listeners
+    //##########################################################################
+
+    //select all input fields named 'filter_continent'
+    d3.selectAll('input[name="filter_continent"]').on('click', function() {
+        //determine the value of the clicked filter check box
+        var continent = d3.select(this).property('value');
+        //determine the checked state
+        var checked = d3.select(this).property('checked');
+
+        //update the continents filter state according to its checked status
+        parameters.filter.continents[continent] = checked;
+
+        //trigger an update
+        update();
+    });
+
+    //select all input fields named 'aggregate'
+    d3.selectAll('input[name="aggregate"]').on('click', function() {
+        //check if the click radio button is the continent aggregated one
+        var isContinent = d3.select(this).property('value') === 'continent';
+        //check if it is checked
+        var checked = d3.select(this).property('checked');
+
+        //we wanna aggregate if we checked the aggregate by continent radio button
+        parameters.aggregate = checked && isContinent;
+
+        update();
+    });
+
+    //since there is just a single instance of the time range, we can directly access it by its defined id
+    d3.select('#filter_time').on('input', function() {
+        //get the value of the time range and convert it to an integer
+        var year = parseInt(d3.select(this).property('value'));
+        //update the parameter
+        parameters.filter.year = year;
+
+        update();
+    });
+
+    /**
+     * helper function
+     * @param column: the clicked column data object, see parameters.columns
+     */
+    function onHeaderClick(column) {
+        //if we already sort by this column, toggle the ascending/descending boolean value
+        if (parameters.sort.by === column.name) {
+            parameters.sort.asc = !parameters.sort.asc;
+        } else {
+            //sort by a new attribute
+            //store the property name in sort.by and use ascending by default
+            parameters.sort.by = column.name;
+            parameters.sort.asc = true;
+        }
+
+        update();
+    }
+
+    //##########################################################################
+    // global helper functions
+    //##########################################################################
+
+    /**
+     * helper function creating an accessor function for the given attribute
+     * @param name
+     * @returns accessor function
+     */
+    function getter(name) {
+        return function(d) { return d[name];}
+    }
+
+    /**
+     * return the given object
+     * @param d
+     * @returns {*}
+     */
+    function returnD(d) {
+        return d;
+    }
+    //ninja version: String
+
+
+</script>
+</body>
+</html>
