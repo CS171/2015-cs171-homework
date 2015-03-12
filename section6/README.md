@@ -1,4 +1,4 @@
-Section 5: Brushing and Linking
+Section 6: Brushing and Linking
 ===
 
 Up to now we've been building standalone graphs in D3, this week we'll learn to connect graphs together to form interactive linked views.
