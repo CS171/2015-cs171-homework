@@ -41,7 +41,7 @@ var dotsEnter = dots
 
 // --- changes for ALL visible dots
 dots
-  .attr("x", function(d) {return d *10; });
+  .attr("cx", function(d) {return d * 20; });
   
 // --- change the nested elements for ALL dots
 // dots.select('title').text(function(d) { return d; })

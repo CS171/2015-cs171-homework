@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+  <link href='http://fonts.googleapis.com/css?family=PT+Sans:400,700' rel='stylesheet' type='text/css'>
+  <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+  <script src="http://d3js.org/d3.v3.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+  <script src="js/volumevis.js"></script>
+  <script src="js/typevis.js"></script>
+
+  <style type="text/css">
+    body {
+      font-family: 'PT Sans', sans-serif;
+    }
+
+    svg {
+      font: 10px sans-serif;
+      width: 100%;
+    }
+
+    .bar {
+      cursor: pointer;
+    }
+
+    .bar rect {
+      fill: steelblue;
+    }
+
+    .axis path,
+    .axis line {
+      fill: none;
+      stroke: #000;
+      shape-rendering: crispEdges;
+    }
+
+    .line {
+      fill: none;
+      stroke: steelblue;
+      stroke-width: 0.5px;
+    }
+
+    .area {
+      fill: steelblue;
+      clip-path: url(#clip);
+    }
+
+    .brush .extent {
+      stroke: #fff;
+      fill-opacity: .125;
+      shape-rendering: crispEdges;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Somerville 311 Call Volume (2012)</h1>
+    <h4>Section 6: Brushing and Linking</h4>
+    <div class="row">
+      <div class="col-md-9" id="volumeVis">
+      </div>
+      <div class="col-md-3" id="typeVis">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12" id="typeVis2">
+      </div>
+    </div>
+  </div>
+
+<script type="text/javascript">
+
+// variable keeping global knowledge of the data
+var allData;
+
+// this function can convert Date objects to a string
+// it can also convert strings to Date objects
+// see: https://github.com/mbostock/d3/wiki/Time-Formatting
+var dateFormatter = d3.time.format("%Y-%m-%d");
+
+var initVis = function(){
+
+  // creates an eventHandler
+  var MyEventHandler = new Object();
+
+  // instantiates all Vis Objects here
+  var volume_vis = new VolumeVis(d3.select("#volumeVis"), allData, MyEventHandler);
+  var type_vis = new TypeVis(d3.select("#typeVis"), allData, MyEventHandler);
+
+  $(MyEventHandler).bind("selectionChanged", function(event, type){
+      volume_vis.onSelectionChange(type);
+  });
+}
+
+var startHere = function() {
+
+  d3.json("../data.json", function(error, data) {
+    if (!error) {
+      // Parse date string into Javascript objects
+      data.forEach(function(d) {
+        d.date = dateFormatter.parse(d.date);
+      });
+
+      allData = data;
+      initVis();
+    }
+  });
+}
+
+startHere();
+
+
+/**
+ * Helper function that gets the width of a D3 element
+ */
+var getInnerWidth = function(element) {
+    var style = window.getComputedStyle(element.node(), null);
+
+    return parseInt(style.getPropertyValue('width'));
+}
+
+</script>
+</body>
+</html>
