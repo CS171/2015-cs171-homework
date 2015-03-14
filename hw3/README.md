@@ -1,6 +1,6 @@
 Homework 3
 ===
-*This homework is due on Friday, March 27th 2015, 11:59 pm*
+*This homework is due on Friday, April 3rd 2015, 11:59 pm*
 
 In this homework assignment you will create an interactive visualization using [D3.js](http://d3js.org). While the previous homework assignments were about iterating on a single visualization, the goal of this homework is to connect several pieces into an interactive multiple, coordinated views (MCV) system. You will implement some of the principles introduced in the ["Interaction" lecture](http://cm.dce.harvard.edu/2015/02/24028/L08/screen_H264MultipleHighLTH-16x9.shtml). 
 
