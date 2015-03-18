@@ -233,7 +233,7 @@ We want to use the brush to choose the data to show in our details-view. As ment
 
 You should get acquainted with the [d3.svg.area()](https://github.com/mbostock/d3/wiki/SVG-Shapes#area) function and the d3 path functions. A useful guide can be found [here](http://www.d3noob.org/2013/01/filling-area-under-graph.html).
 
-Before you start with the tasks of Problem 3, make sure to first copy and paste the functions you wrote for Problem 2 at the correct location into your code.
+Before you start with the tasks of Problems 3 and 4, make yourself aware that you can re-use (copy and paste) some functions you wrote for Problem 2.
 
 #### Task 3a: Create an Area Chart
 Add your code to the `updateVis()` function in file ***js/countvis.js***.
