@@ -16,7 +16,7 @@ Datasets: your final project
 
 A strong dataset is *crucial* for a good project.
 
-**Data wrangling takes longer than expected, even when take that into account**
+**Data wrangling takes longer than expected, even when take that into account.**
 
 You should have your data in hand by the time you submit your project proposal. (or, a strong plan for acquiring it)
 
@@ -188,13 +188,13 @@ Quantcast is a company that measures traffic to websites. Their listing of [Top 
 
 We'll be using [Kimono Labs](https://www.kimonolabs.com/) to extract structured data from this page.
 
-![Start Kimono](/images/kimono-start.png?raw=true)
+![Start Kimono](images/kimono-start.png?raw=true)
 
 *start Kimono. click Close if prompted with an onboarding screen*
 
 Let's capture monthly visit counts.
 
-![Select counts](/images/kimono-counts.png?raw=true)
+![Select counts](images/kimono-counts.png?raw=true)
 
 *select the first monthly value*
 
@@ -212,11 +212,11 @@ Uh oh. It got what we wanted, but also added more values that we don't want. Let
 
 Great! Kimono is now capturing the values.
 
-![All counts selected](/images/kimono-counts-all.png?raw=true)
+![All counts selected](images/kimono-counts-all.png?raw=true)
 
 We can see Kimono identified 100 values *draw attention to the toolbar*. Let's name these values. *name property "count"*
 
-![Naming the property](/images/kimono-counts-toolbar.png?raw=true)
+![Naming the property](images/kimono-counts-toolbar.png?raw=true)
 
 Let's capture rank number now.
 
@@ -234,23 +234,23 @@ Great! *name the property*
 
 Looking good. We're only getting the first page of results thought — let's add paging ability.
 
-![Pagination](/images/kimono-pagination.png?raw=true)
+![Pagination](images/kimono-pagination.png?raw=true)
 
 *return to the Extractor view and select Pagination*
 
-![Next page](/images/kimono-nextpage.png?raw=true)
+![Next page](images/kimono-nextpage.png?raw=true)
 
 *highlight the Next page link*
 
 Let's preview the data we collected.
 
-![Preview data](/images/kimono-viewdata.png?raw=true)
+![Preview data](images/kimono-viewdata.png?raw=true)
 
 *select Raw Data View icon from toolbar; skim the data, confirming correctness*
 
 How does Kimono work?
 
-![Data model view](/images/kimono-datamodel.png?raw=true)
+![Data model view](images/kimono-datamodel.png?raw=true)
 
 *select the Data Model view and select Advanced. point out CSS selectors*
 
@@ -260,7 +260,7 @@ This is a *CSS selector*: it specifies from which elements to pull data from. We
 
 Let's get our data!
 
-![Done](/images/kimono-done.png?raw=true)
+![Done](images/kimono-done.png?raw=true)
 
 *click Done and submit the form*
 
