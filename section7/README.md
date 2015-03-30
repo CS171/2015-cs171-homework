@@ -167,11 +167,13 @@ However, fetching the 7,000+ files would take hours on each page load. Let's pre
 
 We'll use Node for that (you'll need to [install it](https://nodejs.org/download/) to use it). Node is a way to run Javascript outside a browser.
 
-*open fetch/fetch.js and briefly walk through the script*
+*open fetch/fetch.js and briefly walk through the script. add your API key*
 
 Notice we're using `request()` instead of `d3.json()`.
 
 *run `node fetch.js`; quit after a few pages*
+
+We've already run the script for you and the [resulting data is available](http://static.davidchouinard.com/cs171/section7.json)(3.1GB).
 
 At this point, we'd be ready to start making a beautiful visualization.
 
